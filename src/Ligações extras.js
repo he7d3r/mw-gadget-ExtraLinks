@@ -21,22 +21,22 @@ function getProjectListHTML() {
 		return null;
 	}
 
-	var wiki = [ ], langRegExp, url, proto, server,
+	var wiki = [ ], url, proto, server,
 		cLang = mw.config.get( 'wgContentLanguage' ),
+        langRegExp = new RegExp( '^' + cLang ),
 		projName = mw.config.get( 'wgDBname' ),
 		pageURLbegin = mw.config.get('wgServer') + mw.config.get('wgArticlePath').replace('/wiki/$1', ''),
 		canonicalName = mw.config.get('wgCanonicalNamespace'),
 		pageURLend = decodeURI(document.URL.replace(pageURLbegin, ''));
-	if ( cLang === 'pt' ) {
-		langRegExp = new RegExp( '^' + cLang );
-		//If the wiki has versions in each language, wgDBname starts with the language code
-		if ( langRegExp.test(projName) ) {
-			projName = projName.replace(langRegExp, '');
-			if (projName === 'wiki') {
-				projName = 'wikipedia';
-			}
+
+	//If the wiki has versions in each language, wgDBname starts with the language code
+	if ( langRegExp.test(projName) ) {
+		projName = projName.replace(langRegExp, '');
+		if (projName === 'wiki') {
+			projName = 'wikipedia';
 		}
 	}
+
 
 	wiki = wiki.concat( [
 		{ text: 'Wikipédia', http: '$1.wikipedia', https: 'wikipedia/$1' },
