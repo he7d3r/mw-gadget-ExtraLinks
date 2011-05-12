@@ -66,7 +66,7 @@ function getProjectListHTML() {
 		proto = 'http';
 	}
 	for (var i=0 ; i < wiki.length; i++ ) {
-		if (wiki[i][proto].indexOf(projName) !== -1){
+		if (wiki[i].http.indexOf(projName) !== -1){
 			url = server.replace('$1', wiki[i][proto].replace('$1', (cLang !== 'pt'? 'pt' : 'en') ) ) + pageURLend;
 			list += '<li><a href="' + url + '" style="font-weight:bold;">' + wiki[i].text + (cLang !== 'pt'? '' : ' (EN)') + '<\/a><\/li>';
 		} else {
