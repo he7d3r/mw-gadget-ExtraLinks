@@ -27,7 +27,7 @@ function getProjectListHTML() {
 		pageURLbegin = mw.config.get('wgServer') + mw.config.get('wgArticlePath').replace('/wiki/$1', ''),
 		canonicalName = mw.config.get('wgCanonicalNamespace'),
 		pageURLend = decodeURI(document.URL.replace(pageURLbegin, ''));
-	if ( cLang !== 'en' ) {
+	if ( cLang === 'pt' ) {
 		langRegExp = new RegExp( '^' + cLang );
 		//If the wiki has versions in each language, wgDBname starts with the language code
 		if ( langRegExp.test(projName) ) {
