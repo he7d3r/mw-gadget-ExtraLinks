@@ -331,33 +331,29 @@ $(function () {
 		).after( ' / ' );
 	}
 	/**
-	* ShortDiff-link
-	*
-	* When clicking a diff-link shorten it to:
-	* http://wiki.org/?diff=1[&oldid=1]
-	* Due to rewrite rules may not work by default on wikis outside Wikimedia.
-	*
-	* @source: [[meta:MediaWiki:Gadget-ShortDiff.js]]
-	* @author: Krinkle
-	* @revision: 1
-	*/
-	$(function(){
-		$('a').live( 'click', function(){
+	 * ShortDiff-link
+	 * 
+	 * When clicking a diff-link shorten it to:
+	 * http://wiki.org/w/index.php?diff=1[&oldid=1]
+	 * Due to rewrite rules may not work by default on wikis outside Wikimedia.
+	 *
+	 * @source: [[meta:MediaWiki:Gadget-ShortDiff.js]]
+	 * @author: Krinkle
+	 * @revision: 2
+	 */
+	$(function () {
+		$('a').live('click', function () {
 			var href = $(this).attr('href');
-			var diffVal = mw.util.getParamValue( 'diff', href );
-			if ( !href || diffVal === '0' || diffVal === null || $(this).parent().attr( 'id' ) === 't-permalink' ) {
+			var diffVal = mw.util.getParamValue('diff', href);
+			if (!href || !diffVal || $(this).parent().attr( 'id' ) === 't-permalink' ) {
 				return;
 			}
-			var newHref = mw.config.get( 'wgServer' );
-			if ( 'https://' === newHref.substr( 0, 8 ) || newHref.indexOf('translatewiki') > -1 ) {
-				newHref += mw.config.get( 'wgScript' );
-			}
-			newHref += '/?diff=' + diffVal;
-			var oldidVal = mw.util.getParamValue( 'oldid', href );
-			if ( oldidVal ) {
+			var newHref = mw.config.get('wgScript') + '?diff=' + diffVal;
+			var oldidVal = mw.util.getParamValue('oldid', href);
+			if (oldidVal) {
 				newHref += '&oldid=' + oldidVal;
 			}
-			$(this).attr( 'href',  newHref );
+			$(this).attr('href', newHref);
 		});
 	});
 
