@@ -349,7 +349,7 @@ $(function () {
 				return;
 			}
 			var newHref = mw.config.get( 'wgServer' );
-			if ( 'https://' === newHref.substr( 0, 8 )  ) {
+			if ( 'https://' === newHref.substr( 0, 8 ) || newHref.indexOf('translatewiki') > -1 ) {
 				newHref += mw.config.get( 'wgScript' );
 			}
 			newHref += '/?diff=' + diffVal;
