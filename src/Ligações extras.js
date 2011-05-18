@@ -281,8 +281,33 @@ $(function () {
 	}
 
 	if ( mw.config.get( 'wgNamespaceNumber' ) >= 0 ) {
+		window.wikiBlame = {
+			run: function () {
+				var tip = 'Digite um texto no campo abaixo para saber quem o incluiu na página atual.',
+					url = 'http://toolserver.org/~soxred93/blame/index.php?',
+					server = mw.config.get('wgServer'),
+					data = {
+						article: encodeURIComponent(mw.config.get('wgPageName')),
+						lang: encodeURIComponent(mw.config.get('wgContentLanguage')),
+						text: prompt(tip, 'Texto')
+					},
+					urlParts = [];
+				if (server.indexOf('https') > -1) {
+					data.wiki = mw.config.get('wgScript').replace(/\/([a-z]+)\//, '$1');
+				} else {
+					data.wiki = server.replace(/http:\/\/[a-z]+\.([a-z]+).org/, '$1');
+				}
+				for (param in data) {
+					if (data.hasOwnProperty(param) && data[param] !== '') {
+						urlParts.push(param + '=' + data[param]);
+					}
+				}
+				url += urlParts.join('&');
+				window.open(url, '_blank');
+			}
+		}
 		mw.util.addPortletLink('p-cactions',
-			'javascript:window.open(function(){var a=""+prompt("Digite%20um%20texto%20no%20campo%20abaixo%20para%20saber%20quem%20o%20incluiu%20na%20p%5Cu00e1gina%20atual.","Texto"),b=mw.config.get(\'wgServer\').replace(/http:\\/\\/[a-z]+\\.([a-z]+).org/,"$1");return"http://toolserver.org/~soxred93/blame/index.php?article="+encodeURIComponent(mw.config.get(\'wgPageName\'))+"&lang="+encodeURIComponent(mw.config.get(\'wgContentLanguage\'))+"&wiki="+b+"&text="+encodeURIComponent(a)}(),"_blank");void 0;',
+			'javascript:window.wikiBlame.run();',
 			'WikiBlame',
 			'ca-blame',
 			'Identificar o autor de um trecho da página, usando o WikiBlame');
