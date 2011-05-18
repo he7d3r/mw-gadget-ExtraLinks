@@ -293,11 +293,11 @@ $(function () {
 					},
 					urlParts = [];
 				if (server.indexOf('https') > -1) {
-					data.wiki = mw.config.get('wgScript').replace(/\/([a-z]+)\//, '$1');
+					data.wiki = mw.config.get('wgScript').replace(/\/([a-z]+)\/.*/, '$1');
 				} else {
 					data.wiki = server.replace(/http:\/\/[a-z]+\.([a-z]+).org/, '$1');
 				}
-				for (param in data) {
+				for (var param in data) {
 					if (data.hasOwnProperty(param) && data[param] !== '') {
 						urlParts.push(param + '=' + data[param]);
 					}
@@ -305,7 +305,7 @@ $(function () {
 				url += urlParts.join('&');
 				window.open(url, '_blank');
 			}
-		}
+		};
 		mw.util.addPortletLink('p-cactions',
 			'javascript:window.wikiBlame.run();',
 			'WikiBlame',
