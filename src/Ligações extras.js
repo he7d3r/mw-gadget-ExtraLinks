@@ -383,30 +383,36 @@ $(function () {
 	});
 
 	//Workaround for [[bugzilla:10410]]
-	//Convert link syntax [[xx:yy|zz]] to true links on javascript and css pages
-	function createLinks( t ){
-		var url = mw.config.get( 'wgArticlePath' );
+	//Convert link syntax [[zz]] to true links on javascript and css pages
+	var path = mw.config.get('wgArticlePath'),
+		catNS = mw.config.get('wgFormattedNamespaces')['14'],
+		link = [/\[\[\s*([^\|\]]+?)\s*\]\]/ig, '[[<a href="' + path + '">$1</a>]]'],
+		linkWithText = [/\[\[\s*([^\|\]]+?)\s*\|\s*([^\]]+?)\s*\]\]/ig, '[[<a href="' + path + '">$2</a>]]'],
+		cat = [
+		new RegExp('\\[\\[<a href="' + path.replace('$1', '(?:Category|' + catNS + '):([^"]+)') + '">([^<]+)</a>\\]\\]', 'gi'), '[[<a href="' + url.replace('$1', 'Category:$1') + '">' + catNS + ':$1</a>|$2]]'],
+		mw = [/href="\/wiki\/mw:/ig, 'href="' + ((mw.config.get('wgServer').indexOf('https://') === 0) ? 'https://secure.wikimedia.org/wikipedia/mediawiki/wiki/' : 'http://www.mediawiki.org/wiki/')];
+
+	function createLinks(t) {
 		//[[Links like this]]
-		t = t.replace( /\[\[\s*([^\|\]]+?)\s*\]\]/ig, '[[<a href="' + url + '">$1</a>]]' );
+		t = t.replace(link[0], link[1]);
 
 		//[[Links like this|with an alternative text]]
-		t = t.replace( /\[\[\s*([^\|\]]+?)\s*\|\s*([^\]]+?)\s*\]\]/ig, '[[<a href="' + url + '">$2</a>]]');
+		t = t.replace(linkWithText[0], linkWithText[1]);
 
 		//[[Category:Links|with an index for sorting]]
-		var reCat = new RegExp( '\\[\\[<a href="' + url.replace('$1', '(?:Category|' + mw.config.get( 'wgFormattedNamespaces' )[ '14' ] + '):([^"]+)') + '">([^<]+)</a>\\]\\]', 'gi' );
-		t = t.replace( reCat, '[[<a href="' + url.replace( '$1', 'Category:$1' ) + '">' + mw.config.get( 'wgFormattedNamespaces' )[ '14' ] + ':$1</a>|$2]]' );
+		t = t.replace(cat[0], cat[1]);
 
 		//Links to MediaWiki site (Workaround for [[bugzilla:22407]])
-		t = t.replace( /href="\/wiki\/mw:/ig, 'href="' + ( ( mw.config.get( 'wgServer' ).indexOf('https://') === 0 ) ? 'https://secure.wikimedia.org/wikipedia/mediawiki/wiki/' : 'http://www.mediawiki.org/wiki/') );
+		t = t.replace(mw[0], mw[1]);
 		return t;
 	}
 
-	if ( $.inArray( mw.config.get( 'wgNamespaceNumber' ), [ 2, 8] ) !== -1 && mw.config.get( 'wgPageName' ).match( /\.(js|css)$/ ) && $.inArray( mw.config.get( 'wgAction' ), [ 'view', 'purge' ] ) !== -1 ) {
-		$( '#bodyContent pre' )
-			.first().find( 'span.coMULTI, span.co1, span.st0' )
-			.each( function( index ) {
-				$(this).html( createLinks( $(this).html() ) );
-			} );
+	if ($.inArray(mw.config.get('wgNamespaceNumber'), [2, 8]) !== -1 && mw.config.get('wgPageName').match(/\.(js|css)$/) && $.inArray(mw.config.get('wgAction'), ['view', 'purge']) !== -1) {
+		$('#bodyContent pre')
+			.first().find('span.coMULTI, span.co1, span.st0')
+			.each(function (index) {
+				$(this).html(createLinks($(this).html()));
+			});
 	}
 
 	var pos = document.getElementById('pt-mycontris') || document.getElementById('p-personal').getElementsByTagName('li')[0];
