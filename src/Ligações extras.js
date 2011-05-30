@@ -409,6 +409,7 @@ $(function () {
 		for (var i=0; i< regexes.length; i++) {
 			t = t.replace(regexes[i][0], regexes[i][1]);
 		}
+        return t;
 	}
 
 	if ($.inArray(mw.config.get('wgNamespaceNumber'), [2, 8]) !== -1 && mw.config.get('wgPageName').match(/\.(js|css)$/) && $.inArray(mw.config.get('wgAction'), ['view', 'purge']) !== -1) {
