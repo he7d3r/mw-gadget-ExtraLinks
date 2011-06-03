@@ -414,7 +414,7 @@ $(function () {
 
 	if ($.inArray(mw.config.get('wgNamespaceNumber'), [2, 8]) !== -1 && mw.config.get('wgPageName').match(/\.(js|css)$/) && $.inArray(mw.config.get('wgAction'), ['view', 'purge']) !== -1) {
 		$('#bodyContent pre')
-			.first().find('span.coMULTI, span.co1, span.st0')
+			.first().find('span.coMULTI, span.co1') //FIXME: "span.st0" makes this too slow =(
 			.each(function (index) {
 				$(this).html(createLinks($(this).html()));
 			});
