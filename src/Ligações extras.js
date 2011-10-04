@@ -39,17 +39,17 @@ function getProjectListHTML() {
 
 	// FIXME: This seems uncessary after protocol relative URLs
 	wiki = wiki.concat( [
-		{ text: 'Wikipédia', http: '$1.wikipedia' },
-		{ text: 'Wikilivros', http: '$1.wikibooks' },
-		{ text: 'Wikisource', http: '$1.wikisource' },
-		{ text: 'Wikcionário', http: '$1.wiktionary' },
-		{ text: 'Wikiversidade', http: '$1.wikiversity' },
-		{ text: 'Wikinotícias', http: '$1.wikinews' },
-		{ text: 'Wikiquote', http: '$1.wikiquote' },
+		{ text: 'Wikipédia', link: '$1.wikipedia' },
+		{ text: 'Wikilivros', link: '$1.wikibooks' },
+		{ text: 'Wikisource', link: '$1.wikisource' },
+		{ text: 'Wikcionário', link: '$1.wiktionary' },
+		{ text: 'Wikiversidade', link: '$1.wikiversity' },
+		{ text: 'Wikinotícias', link: '$1.wikinews' },
+		{ text: 'Wikiquote', link: '$1.wikiquote' },
 		//Wikis without versions in each language
-		{ text: 'Wikimedia Commons', http: 'commons.wikimedia' },
-		{ text: 'Meta-Wiki', http: 'meta.wikimedia' },
-		{ text: 'Wikispecies', http: 'species.wikimedia' }
+		{ text: 'Wikimedia Commons', link: 'commons.wikimedia' },
+		{ text: 'Meta-Wiki', link: 'meta.wikimedia' },
+		{ text: 'Wikispecies', link: 'species.wikimedia' }
 	] );
 
 	canonicalName += ':' + (mw.config.get('wgCanonicalSpecialPageName') || mw.config.get('wgTitle').replace(' ', '_'));
@@ -58,19 +58,13 @@ function getProjectListHTML() {
 	// var iProjectSys = document.createElement('div');
 	// iProjectSys.style.marginTop = '0.7em';
 	var list = '';
-	if ( mw.config.get( 'wgServer' ) === 'https://secure.wikimedia.org' ) {
-		server = 'https://$1.org';
-		proto = 'https';
-	} else {
-		server = 'http://$1.org';
-		proto = 'http';
-	}
+	server = mw.config.get( 'wgServer' ) === 'https://secure.wikimedia.org'? 'https://$1.org' : '//$1.org';
 	for (var i=0 ; i < wiki.length; i++ ) {
 		if (wiki[i].http.indexOf(projName) !== -1){
-			url = server.replace('$1', wiki[i][proto].replace('$1', (cLang !== 'pt'? 'pt' : 'en') ) ) + pageURLend;
+			url = server.replace('$1', wiki[i].link.replace('$1', (cLang !== 'pt'? 'pt' : 'en') ) ) + pageURLend;
 			list += '<li><a href="' + url + '" style="font-weight:bold;">' + wiki[i].text + (cLang !== 'pt'? '' : ' (EN)') + '<\/a><\/li>';
 		} else {
-			url = server.replace('$1', wiki[i][proto].replace('$1', cLang)) + pageURLend;
+			url = server.replace('$1', wiki[i].link.replace('$1', cLang)) + pageURLend;
 			list += '<li><a href="' + url + '">' + wiki[i].text + '<\/a><\/li>';
 		}
 	}
