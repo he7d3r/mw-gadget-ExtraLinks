@@ -60,7 +60,7 @@ function getProjectListHTML() {
 	var list = '';
 	server = mw.config.get( 'wgServer' ) === 'https://secure.wikimedia.org'? 'https://$1.org' : '//$1.org';
 	for (var i=0 ; i < wiki.length; i++ ) {
-		if (wiki[i].http.indexOf(projName) !== -1){
+		if (wiki[i].link.indexOf(projName) !== -1){
 			url = server.replace('$1', wiki[i].link.replace('$1', (cLang !== 'pt'? 'pt' : 'en') ) ) + pageURLend;
 			list += '<li><a href="' + url + '" style="font-weight:bold;">' + wiki[i].text + (cLang !== 'pt'? '' : ' (EN)') + '<\/a><\/li>';
 		} else {
