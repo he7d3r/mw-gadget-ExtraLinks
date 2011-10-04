@@ -37,19 +37,19 @@ function getProjectListHTML() {
 		}
 	}
 
-
+	// FIXME: This seems uncessary after protocol relative URLs
 	wiki = wiki.concat( [
-		{ text: 'Wikipédia', http: '$1.wikipedia', https: 'wikipedia/$1' },
-		{ text: 'Wikilivros', http: '$1.wikibooks', https: 'wikibooks/$1' },
-		{ text: 'Wikisource', http: '$1.wikisource', https: 'wikisource/$1' },
-		{ text: 'Wikcionário', http: '$1.wiktionary', https: 'wiktionary/$1' },
-		{ text: 'Wikiversidade', http: '$1.wikiversity', https: 'wikiversity/$1' },
-		{ text: 'Wikinotícias', http: '$1.wikinews', https: 'wikinews/$1' },
-		{ text: 'Wikiquote', http: '$1.wikiquote', https: 'wikiquote/$1' },
+		{ text: 'Wikipédia', http: '$1.wikipedia' },
+		{ text: 'Wikilivros', http: '$1.wikibooks' },
+		{ text: 'Wikisource', http: '$1.wikisource' },
+		{ text: 'Wikcionário', http: '$1.wiktionary' },
+		{ text: 'Wikiversidade', http: '$1.wikiversity' },
+		{ text: 'Wikinotícias', http: '$1.wikinews' },
+		{ text: 'Wikiquote', http: '$1.wikiquote' },
 		//Wikis without versions in each language
-		{ text: 'Wikimedia Commons', http: 'commons.wikimedia', https: 'wikipedia/commons' },
-		{ text: 'Meta-Wiki', http: 'meta.wikimedia', https: 'wikipedia/meta' },
-		{ text: 'Wikispecies', http: 'species.wikimedia', https: 'wikipedia/species' }
+		{ text: 'Wikimedia Commons', http: 'commons.wikimedia' },
+		{ text: 'Meta-Wiki', http: 'meta.wikimedia' },
+		{ text: 'Wikispecies', http: 'species.wikimedia' }
 	] );
 
 	canonicalName += ':' + (mw.config.get('wgCanonicalSpecialPageName') || mw.config.get('wgTitle').replace(' ', '_'));
@@ -58,8 +58,8 @@ function getProjectListHTML() {
 	// var iProjectSys = document.createElement('div');
 	// iProjectSys.style.marginTop = '0.7em';
 	var list = '';
-	if ( mw.config.get( 'wgServer' ).charCodeAt(4) !== 58 ) {
-		server = 'https://secure.wikimedia.org/$1';
+	if ( mw.config.get( 'wgServer' ) === 'https://secure.wikimedia.org' ) {
+		server = 'https://$1.org';
 		proto = 'https';
 	} else {
 		server = 'http://$1.org';
@@ -185,7 +185,7 @@ $(function () {
 	 * Unwatchlink per item on watchlist (adds " | unwatch" for each entry)
 	 * Rewritten by Krinkle (2011-01-31)
 	 *
-	 * @source: http://www.mediawiki.org/wiki/Snippets/Unwatch_from_watchlist
+	 * @source: [[mw:Snippets/Unwatch_from_watchlist]]
 	 * @rev: 1
 	 */
 	function addUnwatchlink(){
@@ -292,7 +292,7 @@ $(function () {
 						text: prompt(tip, 'Texto')
 					},
 					urlParts = [];
-				if (server.indexOf('https') > -1) {
+				if ( server === 'https://secure.wikimedia.org' ) {
 					data.wiki = mw.config.get('wgScript').replace(/\/([a-z]+)\/.*/, '$1');
 				} else {
 					data.wiki = server.replace(/http:\/\/[a-z]+\.([a-z]+).org/, '$1');
@@ -359,7 +359,7 @@ $(function () {
 	 * ShortDiff-link
 	 * 
 	 * When clicking a diff-link shorten it to:
-	 * http://wiki.org/w/index.php?diff=1[&oldid=1]
+	 * https://wiki.org/w/index.php?diff=1[&oldid=1]
 	 * Due to rewrite rules may not work by default on wikis outside Wikimedia.
 	 *
 	 * @source: [[meta:MediaWiki:Gadget-ShortDiff.js]]
@@ -401,7 +401,7 @@ $(function () {
 			],
 			[ // Links to MediaWiki site (Workaround for [[bugzilla:22407]])
 				/href="\/wiki\/mw:/ig,
-				'href="' + ((mw.config.get('wgServer').indexOf('https://') === 0) ? 'https://secure.wikimedia.org/wikipedia/mediawiki/wiki/' : 'http://www.mediawiki.org/wiki/')
+				'href="' + '//www.mediawiki.org/wiki/'
 			]
 		];
 
