@@ -1,3 +1,5 @@
+var link;
+
 /** Adiciona ligações para os correlatos na barra lateral ([[MediaZilla:708]])
  * Adiciona links para os correlatos informados com [[Template:Correlatos]],
  * nas páginas especiais e nas mensagens do MediaWiki
@@ -123,14 +125,20 @@ if ( $.inArray( mw.config.get( 'wgDBname' ), [ 'ptwikibooks', 'wikilocaldb' ] ) 
 
 		// Adiciona uma ligação para incluir um modelo da predefinição "Referência a livro"
 		if (0 === mw.config.get( 'wgNamespaceNumber' ) && $.inArray( mw.config.get( 'wgAction' ), [ 'edit', 'submit' ] ) !== -1 ) { // && mw.config.get( 'wgPageName' ).match(/Referências|Bibliografia/)
-			mw.util.addPortletLink('p-cactions',
-				'javascript:insertTags("* {{Referência a livro|NomeAutor=",' +
-							'" |SobrenomeAutor= |Título= |Subtítulo= |Edição= |Local de publicação= |Editora= |Ano= |Páginas= |Volumes= |Volume= |ID= |URL= }}",' +
-							'"")',
+			$( mw.util.addPortletLink(
+				'p-cactions',
+				'#',
 				'+ Referência',
 				'ca-ref',
 				'Adicionar referência a livro',
-				'+');
+				'+'
+			)).click( function( e ) {
+				e.preventDefault();
+				insertTags(
+					'* {' + '{Referência a livro|NomeAutor=',
+					' |SobrenomeAutor= |Título= |Subtítulo= |Edição= |Local de publicação= |Editora= |Ano= |Páginas= |Volumes= |Volume= |ID= |URL= }}'
+				);
+			});
 		}
 
 		//Adiciona uma ligação para limpar a caixa de areia
@@ -139,8 +147,8 @@ if ( $.inArray( mw.config.get( 'wgDBname' ), [ 'ptwikibooks', 'wikilocaldb' ] ) 
 			mw.util.addPortletLink('p-views', mw.util.wikiGetlink( 'Wikilivros:Caixa de areia' ) + '?action=edit&oldid=116378', 'Limpar', 'ca-limpar', 'Limpar a caixa de areia');
 		}
 		if ( 0 === mw.config.get( 'wgNamespaceNumber' ) ) {
-			encodedBookName = mw.util.wikiUrlencode( mw.config.get( 'wgBookName' ) );
-			link = 'http://toolserver.org/~pathoschild/catanalysis/?title='
+			var encodedBookName = mw.util.wikiUrlencode( mw.config.get( 'wgBookName' ) );
+			link = '//toolserver.org/~pathoschild/catanalysis/?title='
 				+ encodedBookName + '&cat=0&wiki=ptwikibooks_p';
 			mw.util.addPortletLink( 'p-tb', link, 'Estatísticas do livro', 't-catanalysis', 'Ver estatísticas sobre este livro', 't', '#t-whatlinkshere');
 			link = mw.util.wikiGetlink( 'Special:RecentChangesLinked' )
@@ -157,7 +165,7 @@ if ( $.inArray( mw.config.get( 'wgDBname' ), [ 'ptwikibooks', 'wikilocaldb' ] ) 
 	});
 } else {
 	mw.util.addCSS('#interProject, #sisterProjects { display: none; }');
-	addOnloadHook(renderProjectsPortlet);
+	$(renderProjectsPortlet);
 }
 
 ( function( $ ) {
@@ -224,7 +232,7 @@ $(function () {
 	//Adiciona ligações editar, links e hist à tela exibida depois de mover uma página
 	if ( 'Movepage' === mw.config.get( 'wgCanonicalSpecialPageName' ) ) {
 		if ( 'Página movida com sucesso' === $( '#firstHeading' ).text() ){
-			//Ficará obsoleto se e quando for possível usar [[MediaWiki:Movepage-page-moved‎‎]] com $3 e $4 (ver translatewiki)
+			//Ficará obsoleto se e quando for possível usar [[MediaWiki:Movepage-page-moved]] com $3 e $4 (ver translatewiki)
 			$( '#bodyContent ul:eq(1) li' ).each( function() {
 				var $mov = $(this).find( 'a' );
 				var url = [
@@ -250,7 +258,7 @@ $(function () {
 		} else {
 			 user = mw.config.get( 'wgTitle' ).split( '/' )[0];
 		}
-		mw.util.addPortletLink( 'p-tb', 'http://toolserver.org/~luxo/contributions/contributions.php?user=' + mw.util.wikiUrlencode( user ), 'Contribuições globais', 't-global', 'Ver as contribuições globais de ' + user, 'g', '#t-contributions + li' );
+		mw.util.addPortletLink( 'p-tb', '//toolserver.org/~luxo/contributions/contributions.php?user=' + mw.util.wikiUrlencode( user ), 'Contribuições globais', 't-global', 'Ver as contribuições globais de ' + user, 'g', '#t-contributions + li' );
 
 		// Rename default link
 		$( '#t-contributions a' ).text( 'Contribuições');
@@ -275,42 +283,35 @@ $(function () {
 	}
 
 	if ( mw.config.get( 'wgNamespaceNumber' ) >= 0 ) {
-		window.wikiBlame = {
+		var wikiBlame = {
 			run: function () {
 				var tip = 'Digite um texto no campo abaixo para saber quem o incluiu na página atual.',
-					url = 'http://toolserver.org/~soxred93/blame/index.php?',
-					server = mw.config.get('wgServer'),
+					url = '//toolserver.org/~soxred93/blame/index.php?',
 					data = {
-						article: encodeURIComponent(mw.config.get('wgPageName')),
-						lang: encodeURIComponent(mw.config.get('wgContentLanguage')),
+						article: mw.config.get('wgPageName'),
+						lang: mw.config.get('wgContentLanguage'),
 						text: prompt(tip, 'Texto')
-					},
-					urlParts = [];
-				if ( server === 'https://secure.wikimedia.org' ) {
-					data.wiki = mw.config.get('wgScript').replace(/\/([a-z]+)\/.*/, '$1');
-				} else {
-					data.wiki = server.replace(/http:\/\/[a-z]+\.([a-z]+).org/, '$1');
-				}
-				for (var param in data) {
-					if (data.hasOwnProperty(param) && data[param] !== '') {
-						urlParts.push(param + '=' + data[param]);
-					}
-				}
-				url += urlParts.join('&');
-				window.open(url, '_blank');
+					};
+				data.wiki = mw.config.get('wgServer')
+					.replace( /\/\/[a-z]+\.([a-z]+).org/, '$1' );
+				window.open( url + $.param( data ), '_blank');
 			}
 		};
-		mw.util.addPortletLink('p-cactions',
-			'javascript:window.wikiBlame.run();',
+		$( mw.util.addPortletLink('p-cactions',
+			'#',
 			'WikiBlame',
 			'ca-blame',
-			'Identificar o autor de um trecho da página, usando o WikiBlame');
+			'Identificar o autor de um trecho da página, usando o WikiBlame'
+		)).click( function( e ) {
+			e.preventDefault();
+			wikiBlame.run();
+		});
 	}
 
 
 	//Adiciona ao topo das mensagens de sistema uma aba com ligação para o Translatewiki
 	if (8 === mw.config.get( 'wgNamespaceNumber' ) ) {
-		mw.util.addPortletLink('p-namespaces', 'http://translatewiki.net/wiki/' + mw.util.wikiUrlencode( mw.config.get( 'wgPageName' ) ) + '/pt', 'Translatewiki', 'ca-trans', 'Ver a mesma mensagem no translatewiki.net');
+		mw.util.addPortletLink('p-namespaces', '//translatewiki.net/wiki/' + mw.util.wikiUrlencode( mw.config.get( 'wgPageName' ) ) + '/pt', 'Translatewiki', 'ca-trans', 'Ver a mesma mensagem no translatewiki.net');
 	}
 
 	//Adiciona uma ligação na barra lateral para mostrar as estatísticas sobre a visualização da página exibida
@@ -325,7 +326,7 @@ $(function () {
 		'wikiversity': '.v'
 	};
 
-	var link = 'http://stats.grok.se/' + mw.config.get( 'wgContentLanguage' ) + code[proj] + '/';
+	link = 'http://stats.grok.se/' + mw.config.get( 'wgContentLanguage' ) + code[proj] + '/';
 	var d=new Date();
 	var mes = d.getMonth()+1;
 	mes = mes<10? '0'.concat(mes): mes;
@@ -351,7 +352,7 @@ $(function () {
 	}
 	/**
 	 * ShortDiff-link
-	 * 
+	 *
 	 * When clicking a diff-link shorten it to:
 	 * https://wiki.org/w/index.php?diff=1[&oldid=1]
 	 * Due to rewrite rules may not work by default on wikis outside Wikimedia.
