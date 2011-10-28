@@ -414,10 +414,5 @@ $(function () {
 				$(this).html(createLinks($(this).html()));
 			});
 	}
-
-	var pos = document.getElementById('pt-mycontris') || document.getElementById('p-personal').getElementsByTagName('li')[0];
-	mw.util.addPortletLink('p-personal', mw.util.wikiGetlink( 'Special:Watchlist' ) + '?namespace=0&days=0', '(main)', 't-main', 'Ver as páginas vigiadas no espaço nominal principal', 'g', pos);
-
-
 });
 } )( jQuery );
