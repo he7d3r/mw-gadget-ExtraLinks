@@ -414,5 +414,21 @@ $(function () {
 				$(this).html(createLinks($(this).html()));
 			});
 	}
+
+	/* Add a permalink to [[Special:ExpandTemplates]] */
+	if ( mw.config.get( 'wgCanonicalSpecialPageName' ) == 'ExpandTemplates' ) {
+		$('#output').before(
+			'<a href="' +
+				mw.util.wikiGetlink( 'Special:ExpandTemplates' ) + '?' +
+				$.param({
+					'removecomments': $('#removecomments').is(':checked'),
+					'removenowiki': $('#removenowiki').is(':checked'),
+					'generate_xml': $('#generate_xml').is(':checked'),
+					'input': $( '#input' ).val()
+				}) +
+			'">Link para este teste</a>'
+		);
+	}
+
 });
 } )( jQuery );
