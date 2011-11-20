@@ -416,19 +416,25 @@ $(function () {
 	}
 
 	/* Add a permalink to [[Special:ExpandTemplates]] */
-	if ( mw.config.get( 'wgCanonicalSpecialPageName' ) == 'ExpandTemplates' ) {
-		$('#output').before(
-			'<a href="' +
-				mw.util.wikiGetlink( 'Special:ExpandTemplates' ) + '?' +
-				$.param({
-					'removecomments': $('#removecomments').is(':checked'),
-					'removenowiki': $('#removenowiki').is(':checked'),
-					'generate_xml': $('#generate_xml').is(':checked'),
-					'input': $( '#input' ).val()
-				}) +
-			'">Link para este teste</a>'
-		);
-	}
+	$(function(){
+		var param = {};
+		if ( mw.config.get( 'wgCanonicalSpecialPageName' ) == 'ExpandTemplates' ) {
+			if ( $('#removecomments').is(':checked') ) {
+				param.removecomments = true;
+			}
+			if ( $('#removenowiki').is(':checked') ) {
+				param.removenowiki = true;
+			}
+			if ( $('#generate_xml').is(':checked') ) {
+				param.generate_xml = true;
+			}
+			$( 'legend' ).append(
+				' (<a href="' +
+					mw.util.wikiGetlink( 'Special:ExpandTemplates' ) + '?' + $.param( param ) +
+				'">link permanente para o teste atual</a>)'
+			);
+		}
+	});
 
 });
 } )( jQuery );
