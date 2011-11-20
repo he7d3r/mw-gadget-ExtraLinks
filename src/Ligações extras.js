@@ -417,7 +417,9 @@ $(function () {
 
 	/* Add a permalink to [[Special:ExpandTemplates]] */
 	$(function(){
-		var param = {};
+		var param = {
+			'input': $( '#input' ).val()
+		};
 		if ( mw.config.get( 'wgCanonicalSpecialPageName' ) == 'ExpandTemplates' ) {
 			if ( $('#removecomments').is(':checked') ) {
 				param.removecomments = true;
