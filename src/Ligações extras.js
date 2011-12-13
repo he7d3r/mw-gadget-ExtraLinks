@@ -23,9 +23,9 @@ function getProjectListHTML() {
 		return null;
 	}
 
-	var wiki = [ ], url, proto, server,
+	var	wiki = [ ], url, proto, server,
 		cLang = mw.config.get( 'wgContentLanguage' ),
-        langRegExp = new RegExp( '^' + cLang ),
+		langRegExp = new RegExp( '^' + cLang ),
 		projName = mw.config.get( 'wgDBname' ),
 		pageURLbegin = mw.config.get('wgServer') + mw.config.get('wgArticlePath').replace('/wiki/$1', ''),
 		canonicalName = mw.config.get('wgCanonicalNamespace'),
@@ -122,7 +122,6 @@ function renderProjectsPortlet() {
 
 if ( $.inArray( mw.config.get( 'wgDBname' ), [ 'ptwikibooks', 'wikilocaldb' ] ) !== -1 ) {
 	$(function () {
-
 		// Adiciona uma ligação para incluir um modelo da predefinição "Referência a livro"
 		if (0 === mw.config.get( 'wgNamespaceNumber' ) && $.inArray( mw.config.get( 'wgAction' ), [ 'edit', 'submit' ] ) !== -1 ) { // && mw.config.get( 'wgPageName' ).match(/Referências|Bibliografia/)
 			$( mw.util.addPortletLink(
@@ -198,7 +197,7 @@ $(function () {
 		// Get the links
 		var $wlHistLinks = $( '#content' ).find( 'ul.special > li > a[href$="action=history"]');
 		$.each( $wlHistLinks, function() {
-			var     $el = $( this ), // Cache the result instead of calling $() again
+			var	$el = $( this ), // Cache the result instead of calling $() again
 				$unwatch = $el.clone()
 					.text( 'unwatch' )
 					.css('color', 'gray')
@@ -272,7 +271,7 @@ $(function () {
 	*/
 	// Not on Special pages
 	if ( !mw.config.get('wgCanonicalSpecialPageName') ) {
-		var     url,
+		var	url,
 			$plink = $('#t-permalink a');
 		if ( $plink.size() ) {
 			url = $plink.attr('href').replace( '&oldid=', '&diff=prev&oldid=' );
@@ -283,20 +282,6 @@ $(function () {
 	}
 
 	if ( mw.config.get( 'wgNamespaceNumber' ) >= 0 ) {
-		var wikiBlame = {
-			run: function () {
-				var tip = 'Digite um texto no campo abaixo para saber quem o incluiu na página atual.',
-					url = '//toolserver.org/~soxred93/blame/index.php?',
-					data = {
-						article: mw.config.get('wgPageName'),
-						lang: mw.config.get('wgContentLanguage'),
-						text: prompt(tip, 'Texto')
-					};
-				data.wiki = mw.config.get('wgServer')
-					.replace( /\/\/[a-z]+\.([a-z]+).org/, '$1' );
-				window.open( url + $.param( data ), '_blank');
-			}
-		};
 		$( mw.util.addPortletLink('p-cactions',
 			'#',
 			'WikiBlame',
@@ -304,7 +289,16 @@ $(function () {
 			'Identificar o autor de um trecho da página, usando o WikiBlame'
 		)).click( function( e ) {
 			e.preventDefault();
-			wikiBlame.run();
+			var tip = 'Digite um texto no campo abaixo para saber quem o incluiu na página atual.',
+				url = '//toolserver.org/~soxred93/blame/index.php?',
+				data = {
+					article: mw.config.get('wgPageName'),
+					lang: mw.config.get('wgContentLanguage'),
+					text: prompt(tip, 'Texto')
+				};
+			data.wiki = mw.config.get('wgServer')
+				.replace( /\/\/[a-z]+\.([a-z]+).org/, '$1' );
+			window.open( url + $.param( data ), '_blank');
 		});
 	}
 
@@ -377,7 +371,7 @@ $(function () {
 		});
 	});
 
-    //Workaround for [[bugzilla:10410]]
+	//Workaround for [[bugzilla:10410]]
 	//Convert link syntax [[zz]] to true links on javascript and css pages
 	var path = mw.config.get('wgArticlePath'),
 		catNS = mw.config.get('wgFormattedNamespaces')['14'],
@@ -404,7 +398,7 @@ $(function () {
 		for (var i=0; i< regexes.length; i++) {
 			t = t.replace(regexes[i][0], regexes[i][1]);
 		}
-        return t;
+		return t;
 	}
 
 	if ($.inArray(mw.config.get('wgNamespaceNumber'), [2, 8]) !== -1 && mw.config.get('wgPageName').match(/\.(js|css)$/) && $.inArray(mw.config.get('wgAction'), ['view', 'purge']) !== -1) {
