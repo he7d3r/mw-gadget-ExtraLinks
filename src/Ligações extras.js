@@ -50,6 +50,7 @@ function getProjectListHTML() {
 		{ text: 'Wikiquote', link: '$1.wikiquote' },
 		//Wikis without versions in each language
 		{ text: 'Wikimedia Commons', link: 'commons.wikimedia' },
+		{ text: 'MediaWiki', link: 'www.mediawiki' },
 		{ text: 'Meta-Wiki', link: 'meta.wikimedia' },
 		{ text: 'Wikispecies', link: 'species.wikimedia' }
 	] );
@@ -290,14 +291,15 @@ $(function () {
 		)).click( function( e ) {
 			e.preventDefault();
 			var tip = 'Digite um texto no campo abaixo para saber quem o incluiu na página atual.',
-				url = '//toolserver.org/~soxred93/blame/index.php?',
+				url = 'http://wikipedia.ramselehof.de/wikiblame.php?',
 				data = {
-					article: mw.config.get('wgPageName'),
-					lang: mw.config.get('wgContentLanguage'),
-					text: prompt(tip, 'Texto')
+					'article': mw.config.get('wgPageName'),
+					'user_lang': mw.config.get('wgUserLanguage').replace(/-.+/g, ''),
+					'lang': mw.config.get('wgContentLanguage'),
+					'needle': prompt(tip, 'Texto'),
+					'project': mw.config.get('wgServer')
+						.replace( /\/\/[a-z]+\.([a-z]+).org/, '$1' )
 				};
-			data.wiki = mw.config.get('wgServer')
-				.replace( /\/\/[a-z]+\.([a-z]+).org/, '$1' );
 			window.open( url + $.param( data ), '_blank');
 		});
 	}
