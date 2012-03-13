@@ -186,7 +186,7 @@ $(function () {
 		var	href = $(this).attr('href'),
 			diffVal = mw.util.getParamValue('diff', href),
 			newHref, oldidVal;
-		if (!href || !diffVal || diffVal === '0' || $(this).parent().attr( 'id' ) === 't-permalink' ) {
+		if (!href || $.inArray( diffVal, [undefined, null, '', 0, '0', 'cur'] ) !== -1 || $(this).parent().attr( 'id' ) === 't-permalink' ) {
 			return;
 		}
 		newHref = mw.config.get('wgScript') + '?diff=' + diffVal;
