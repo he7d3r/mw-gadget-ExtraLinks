@@ -1,10 +1,9 @@
-
 /*global $, document, mw, prompt, window*/
 /*jslint white: true, plusplus: true, regexp: true */
 $(function () {
 'use strict';
 
-var link, $link, encodedBookName, user, url, $plink, proj, code, d, mes, ano, path, catNS, regexes;
+var link, $link, encodedBookName, user, proj, code, d, mes, ano, path, catNS, regexes;
 
 if ( $.inArray( mw.config.get( 'wgDBname' ), [ 'ptwikibooks', 'wikilocaldb' ] ) !== -1 && mw.config.get( 'wgNamespaceNumber' ) === 0 ) {
 	encodedBookName = mw.util.wikiUrlencode( mw.config.get( 'wgBookName' ) );
@@ -87,23 +86,6 @@ if ( $.inArray( mw.config.get( 'wgNamespaceNumber' ), [ 2, 3 ] ) !== -1
 
 	// Rename default link
 	$( '#t-contributions a' ).text( 'Contribuições');
-}
-
-/**
-* Action link: Last revision diff
-*
-* @source: [[mw:Snippets/Last revision action]]
-* @rev: 3
-*/
-// Not on Special pages
-if ( !mw.config.get('wgCanonicalSpecialPageName') ) {
-	$plink = $('#t-permalink a');
-	if ( $plink.size() ) {
-		url = $plink.attr('href').replace( '&oldid=', '&diff=prev&oldid=' );
-	} else {
-		url = mw.config.get('wgScript') + '?title=' + mw.util.wikiUrlencode( mw.config.get('wgPageName') ) + '&diff=0';
-	}
-	mw.util.addPortletLink( 'p-namespaces', url, '↶', 'ca-last', 'Mostrar as alterações feitas na última edição' );
 }
 
 if ( mw.config.get( 'wgNamespaceNumber' ) >= 0 ) {
