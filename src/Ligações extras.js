@@ -1,6 +1,11 @@
-/*global $, document, mw, prompt, window*/
-/*jslint white: true, plusplus: true, regexp: true */
-$(function () {
+/**
+ * Add some extra links
+ * @author: [[User:Helder.wiki]]
+ * @tracking: [[Special:GlobalUsage/User:Helder.wiki/Tools/Ligações extras.js]] ([[File:User:Helder.wiki/Tools/Ligações extras.js]])
+ */
+/*jslint browser: true, white: true, regexp: true */
+/*global jQuery, mediaWiki */
+( function ( $, mw /* , undefined */ ) {
 'use strict';
 
 var link, $link, encodedBookName, user, proj, code, d, mes, ano;
@@ -88,32 +93,17 @@ if ( $.inArray( mw.config.get( 'wgNamespaceNumber' ), [ 2, 3 ] ) !== -1
 	$( '#t-contributions a' ).text( 'Contribuições');
 }
 
-if ( mw.config.get( 'wgNamespaceNumber' ) >= 0 ) {
-	$( mw.util.addPortletLink('p-cactions',
-		'#',
-		'WikiBlame',
-		'ca-blame',
-		'Identificar o autor de um trecho da página, usando o WikiBlame'
-	)).click( function( e ) {
-		e.preventDefault();
-		var tip = 'Digite um texto no campo abaixo para saber quem o incluiu na página atual.',
-			url = 'http://wikipedia.ramselehof.de/wikiblame.php?',
-			data = {
-				'article': mw.config.get('wgPageName'),
-				'user_lang': mw.config.get('wgUserLanguage').replace(/-.+/g, ''),
-				'lang': mw.config.get('wgContentLanguage'),
-				'needle': prompt(tip, 'Texto'),
-				'project': mw.config.get('wgServer')
-					.replace( /\/\/[a-z]+\.([a-z]+).org/, '$1' )
-			};
-		window.open( url + $.param( data ), '_blank');
-	});
-}
-
 
 //Adiciona ao topo das mensagens de sistema uma aba com ligação para o Translatewiki
 if (8 === mw.config.get( 'wgNamespaceNumber' ) ) {
-	mw.util.addPortletLink('p-namespaces', '//translatewiki.net/wiki/' + mw.util.wikiUrlencode( mw.config.get( 'wgPageName' ) ) + '/pt', 'Translatewiki', 'ca-trans', 'Ver a mesma mensagem no translatewiki.net');
+	mw.util.addPortletLink(
+		'p-namespaces',
+		'//translatewiki.net/wiki/' + mw.util.wikiUrlencode( mw.config.get( 'wgPageName' ) ) +
+			( mw.config.get( 'wgPageName' ).indexOf( '/pt' ) !== -1 ? '/pt' : '' ),
+		'Translatewiki',
+		'ca-trans',
+		'Ver a mesma mensagem no Translatewiki.net'
+	);
 }
 
 //Adiciona uma ligação na barra lateral para mostrar as estatísticas sobre a visualização da página exibida
@@ -180,4 +170,4 @@ $(function () {
 	});
 });
 
-});
+}( jQuery, mediaWiki ) );
