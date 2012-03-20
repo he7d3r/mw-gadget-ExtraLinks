@@ -41,14 +41,14 @@ if ( 0 <= mw.config.get( 'wgNamespaceNumber' ) ) {
 }
 
 /**
-	* Special:WhatLinksHere edit, history and delete links
-	*
-	* Adds "edit", "hist" and "delete" link to [[Special:WhatLinksHere]]
-	*
-	* @source: [[mw:Snippets/Special:WhatLinksHere history link]]
-	* @rev: 2
-	* TODO: Add chekboxes to show/hide each extra button
-	*/
+ * Special:WhatLinksHere edit, history and delete links
+ *
+ * Adds "edit", "hist" and "delete" link to [[Special:WhatLinksHere]]
+ *
+ * @source: [[mw:Snippets/Special:WhatLinksHere history link]]
+ * @rev: 2
+ * TODO: Add chekboxes to show/hide each extra button
+ */
 $( '#mw-whatlinkshere-list li, #editform .templatesUsed li' ).each( function() {
 	var	url = mw.config.get( 'wgScript' ) + '?title=' + encodeURIComponent( $( 'a:first', this ).text() ) + '&action=',
 		sel = 'Whatlinkshere' === mw.config.get( 'wgCanonicalSpecialPageName' ) ? '.mw-whatlinkshere-tools a:last' : 'a:last';
@@ -99,7 +99,7 @@ if (8 === mw.config.get( 'wgNamespaceNumber' ) ) {
 	mw.util.addPortletLink(
 		'p-namespaces',
 		'//translatewiki.net/wiki/' + mw.util.wikiUrlencode( mw.config.get( 'wgPageName' ) ) +
-			( mw.config.get( 'wgPageName' ).indexOf( '/pt' ) !== -1 ? '/pt' : '' ),
+			( mw.config.get( 'wgPageName' ).indexOf( '/' ) === -1 ? '/pt' : '' ),
 		'Translatewiki',
 		'ca-trans',
 		'Ver a mesma mensagem no Translatewiki.net'
@@ -124,7 +124,15 @@ mes = d.getMonth()+1;
 mes = mes<10? '0'.concat(mes): mes;
 ano = d.getFullYear();
 link = link.concat(ano).concat(mes) + '/' + mw.config.get( 'wgPageName' );
-mw.util.addPortletLink( 'p-tb', link, 'Exibições da página', 't-stat', 'Ver estatísticas sobre a visualização desta página', 't', '#t-whatlinkshere');
+mw.util.addPortletLink(
+	'p-tb',
+	link,
+	'Exibições da página',
+	't-stat',
+	'Ver estatísticas sobre a visualização desta página',
+	't',
+	'#t-whatlinkshere'
+);
 
 
 
@@ -158,7 +166,10 @@ $(function () {
 		var	href = $(this).attr('href'),
 			diffVal = mw.util.getParamValue('diff', href),
 			newHref, oldidVal;
-		if (!href || $.inArray( diffVal, [undefined, null, '', 0, '0', 'cur'] ) !== -1 || $(this).parent().attr( 'id' ) === 't-permalink' ) {
+		if ( !href
+			|| $.inArray( diffVal, [undefined, null, '', 0, '0', 'cur'] ) !== -1
+			|| $(this).parent().attr( 'id' ) === 't-permalink'
+		) {
 			return;
 		}
 		newHref = mw.config.get('wgScript') + '?diff=' + diffVal;
