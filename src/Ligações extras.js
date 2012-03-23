@@ -169,6 +169,10 @@ $(function () {
 		if ( !href
 			|| $.inArray( diffVal, [undefined, null, '', 0, '0', 'cur'] ) !== -1
 			|| $(this).parent().attr( 'id' ) === 't-permalink'
+			|| ( href.indexOf( location.host ) === -1
+				&& href.indexOf('/w/index.php') !== 0
+				&& href.indexOf('/wiki/') !== 0
+			)
 		) {
 			return;
 		}
