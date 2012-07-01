@@ -40,6 +40,33 @@ if ( 0 <= mw.config.get( 'wgNamespaceNumber' ) ) {
 	);
 }
 
+//Adiciona uma ligação para as contribuições globais de um usuário
+if ( $.inArray( mw.config.get( 'wgNamespaceNumber' ), [ 2, 3 ] ) !== -1
+	|| 'Contributions' === mw.config.get('wgCanonicalSpecialPageName') ){
+	if ( mw.config.get('wgNamespaceNumber') === -1 ){
+			user = $('#contentSub a:first').text();
+	} else {
+			user = mw.config.get( 'wgTitle' ).split( '/' )[0];
+	}
+	mw.util.addPortletLink( 'p-tb', '//toolserver.org/~luxo/contributions/contributions.php?user=' + mw.util.wikiUrlencode( user ), 'Contribuições globais', 't-global', 'Ver as contribuições globais de ' + user, 'g', '#t-contributions + li' );
+
+	// Rename default link
+	$( '#t-contributions a' ).text( 'Contribuições');
+}
+
+
+//Adiciona ao topo das mensagens de sistema uma aba com ligação para o Translatewiki
+if (8 === mw.config.get( 'wgNamespaceNumber' ) ) {
+	mw.util.addPortletLink(
+		'p-namespaces',
+		'//translatewiki.net/wiki/' + mw.util.wikiUrlencode( mw.config.get( 'wgPageName' ) ) +
+			( mw.config.get( 'wgPageName' ).indexOf( '/' ) === -1 ? '/pt' : '' ),
+		'Translatewiki',
+		'ca-trans',
+		'Ver a mesma mensagem no Translatewiki.net'
+	);
+}
+
 /**
  * Special:WhatLinksHere edit, history and delete links
  *
@@ -78,32 +105,6 @@ if ( 'Movepage' === mw.config.get( 'wgCanonicalSpecialPageName' ) ) {
 			});
 		});
 	}
-}
-//Adiciona uma ligação para as contribuições globais de um usuário
-if ( $.inArray( mw.config.get( 'wgNamespaceNumber' ), [ 2, 3 ] ) !== -1
-	|| 'Contributions' === mw.config.get('wgCanonicalSpecialPageName') ){
-	if ( mw.config.get('wgNamespaceNumber') === -1 ){
-			user = $('#contentSub a:first').text();
-	} else {
-			user = mw.config.get( 'wgTitle' ).split( '/' )[0];
-	}
-	mw.util.addPortletLink( 'p-tb', '//toolserver.org/~luxo/contributions/contributions.php?user=' + mw.util.wikiUrlencode( user ), 'Contribuições globais', 't-global', 'Ver as contribuições globais de ' + user, 'g', '#t-contributions + li' );
-
-	// Rename default link
-	$( '#t-contributions a' ).text( 'Contribuições');
-}
-
-
-//Adiciona ao topo das mensagens de sistema uma aba com ligação para o Translatewiki
-if (8 === mw.config.get( 'wgNamespaceNumber' ) ) {
-	mw.util.addPortletLink(
-		'p-namespaces',
-		'//translatewiki.net/wiki/' + mw.util.wikiUrlencode( mw.config.get( 'wgPageName' ) ) +
-			( mw.config.get( 'wgPageName' ).indexOf( '/' ) === -1 ? '/pt' : '' ),
-		'Translatewiki',
-		'ca-trans',
-		'Ver a mesma mensagem no Translatewiki.net'
-	);
 }
 
 //Adiciona uma ligação na barra lateral para mostrar as estatísticas sobre a visualização da página exibida
@@ -150,39 +151,5 @@ if ( $link.size() ) {
 		.text( 'Link curto' )
 	).after( ' / ' );
 }
-/**
-	* ShortDiff-link
-	*
-	* When clicking a diff-link shorten it to:
-	* https://wiki.org/w/index.php?diff=1[&oldid=1]
-	* Due to rewrite rules may not work by default on wikis outside Wikimedia.
-	*
-	* @source: [[meta:MediaWiki:Gadget-ShortDiff.js]]
-	* @author: Krinkle
-	* @revision: 2
-	*/
-$(function () {
-	$('a').live('click', function () {
-		var	href = $(this).attr('href'),
-			diffVal = mw.util.getParamValue('diff', href),
-			newHref, oldidVal;
-		if ( !href
-			|| $.inArray( diffVal, [undefined, null, '', 0, '0', 'cur'] ) !== -1
-			|| $(this).parent().attr( 'id' ) === 't-permalink'
-			|| ( href.indexOf( location.host ) === -1
-				&& href.indexOf('/w/index.php') !== 0
-				&& href.indexOf('/wiki/') !== 0
-			)
-		) {
-			return;
-		}
-		newHref = mw.config.get('wgScript') + '?diff=' + diffVal;
-		oldidVal = mw.util.getParamValue('oldid', href);
-		if (oldidVal) {
-			newHref += '&oldid=' + oldidVal;
-		}
-		$(this).attr('href', newHref);
-	});
-});
 
 }( jQuery, mediaWiki ) );
