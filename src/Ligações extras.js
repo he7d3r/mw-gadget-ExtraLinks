@@ -3,9 +3,9 @@
  * @author: [[User:Helder.wiki]]
  * @tracking: [[Special:GlobalUsage/User:Helder.wiki/Tools/Ligações extras.js]] ([[File:User:Helder.wiki/Tools/Ligações extras.js]])
  */
-/*jslint browser: true, white: true, regexp: true */
-/*global jQuery, mediaWiki */
-( function ( $, mw /* , undefined */ ) {
+/*jslint browser: true, white: true, regexp: true, todo: true */
+/*global mediaWiki, jQuery */
+( function ( mw, $ ) {
 'use strict';
 
 var link, $link, encodedBookName, user, proj, code, d, mes, ano;
@@ -40,18 +40,18 @@ if ( 0 <= mw.config.get( 'wgNamespaceNumber' ) ) {
 	);
 }
 
-//Adiciona uma ligação para as contribuições globais de um usuário
+// Adiciona uma ligação para as contribuições globais de um usuário
 if ( $.inArray( mw.config.get( 'wgNamespaceNumber' ), [ 2, 3 ] ) !== -1
 	|| 'Contributions' === mw.config.get('wgCanonicalSpecialPageName') ){
 	if ( mw.config.get('wgNamespaceNumber') === -1 ){
-			user = $('#contentSub a:first').text();
+			user = $('input[name="target"]').val();
 	} else {
 			user = mw.config.get( 'wgTitle' ).split( '/' )[0];
 	}
 	mw.util.addPortletLink( 'p-tb', '//toolserver.org/~luxo/contributions/contributions.php?user=' + mw.util.wikiUrlencode( user ), 'Contribuições globais', 't-global', 'Ver as contribuições globais de ' + user, 'g', '#t-contributions + li' );
 
 	// Rename default link
-	$( '#t-contributions a' ).text( 'Contribuições');
+	$( '#t-contributions' ).find( 'a' ).text( 'Contribuições');
 }
 
 
@@ -89,7 +89,7 @@ $( '#mw-whatlinkshere-list li, #editform .templatesUsed li' ).each( function() {
 //Adiciona ligações editar, links e hist à tela exibida depois de mover uma página
 if ( 'Movepage' === mw.config.get( 'wgCanonicalSpecialPageName' ) ) {
 	if ( 'Página movida com sucesso' === $( '#firstHeading' ).text() ){
-		//Ficará obsoleto se e quando for possível usar [[MediaWiki:Movepage-page-moved]] com $3 e $4 (ver translatewiki)
+		// Ficará obsoleto se e quando for possível usar [[MediaWiki:Movepage-page-moved]] com $3 e $4 (ver translatewiki)
 		$( '#bodyContent ul:eq(1) li' ).each( function() {
 			var	$mov = $(this).find( 'a' ),
 				url = [
@@ -137,14 +137,14 @@ mw.util.addPortletLink(
 
 
 
-//Subpáginas
+// Subpáginas
 if (document.getElementById('p-tb') && $.inArray( mw.config.get( 'wgNamespaceNumber' ), [ -1, 6] ) === -1){
 	link = mw.util.wikiGetlink( 'Special:PrefixIndex/' + mw.config.get( 'wgPageName' ) );
 	mw.util.addPortletLink('p-tb', link, 'Subpáginas', 't-subpages', 'Subpáginas desta página');
 }
 
 // Add a short permanent link (without 'title=...')
-$link = $( '#t-permalink a' ).text('Link perm.');
+$link = $( '#t-permalink' ).find( 'a' ).text('Link perm.');
 if ( $link.size() ) {
 	$link.after( $( '<a>' )
 		.attr( 'href', $link.attr( 'href' ).replace( /title=[^&]*&/, '' ) )
@@ -152,4 +152,4 @@ if ( $link.size() ) {
 	).after( ' / ' );
 }
 
-}( jQuery, mediaWiki ) );
+}( mediaWiki, jQuery ) );
