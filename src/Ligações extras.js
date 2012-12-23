@@ -72,7 +72,7 @@ if (8 === mw.config.get( 'wgNamespaceNumber' ) ) {
  *
  * Adds "edit", "hist" and "delete" link to [[Special:WhatLinksHere]]
  *
- * @source: [[mw:Snippets/Special:WhatLinksHere history link]]
+ * @source: [[mw:Snippets/Special:WhatLinksHere action links]]
  * @rev: 2
  * TODO: Add chekboxes to show/hide each extra button
  */
