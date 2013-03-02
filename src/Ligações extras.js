@@ -67,26 +67,7 @@ if (8 === mw.config.get( 'wgNamespaceNumber' ) ) {
 	);
 }
 
-/**
- * Special:WhatLinksHere edit, history and delete links
- *
- * Adds "edit", "hist" and "delete" link to [[Special:WhatLinksHere]]
- *
- * @source: [[mw:Snippets/Special:WhatLinksHere action links]]
- * @rev: 2
- * TODO: Add chekboxes to show/hide each extra button
- */
-$( '#mw-whatlinkshere-list li, #editform .templatesUsed li' ).each( function() {
-	var	url = mw.config.get( 'wgScript' ) + '?title=' + encodeURIComponent( $( 'a:first', this ).text() ) + '&action=',
-		sel = 'Whatlinkshere' === mw.config.get( 'wgCanonicalSpecialPageName' ) ? '.mw-whatlinkshere-tools a:last' : 'a:last';
-	$( sel, this )
-		.after( $( '<a>' ).attr( 'href', url + 'delete' ).text( 'delete' ) ).after( ' | ' )
-		.after( $( '<a>' ).attr( 'href', url + 'history' ).text( 'hist' ) ).after( ' | ' )
-		//TODO: Não inserir se for o '.templatesUsed'
-		.after( $( '<a>' ).attr( 'href', url + 'edit' ).text( 'edit' ) ).after( ' | ' );
-});
-
-//Adiciona ligações editar, links e hist à tela exibida depois de mover uma página
+// Adiciona ligações editar, links e hist à tela exibida depois de mover uma página
 if ( 'Movepage' === mw.config.get( 'wgCanonicalSpecialPageName' ) ) {
 	if ( 'Página movida com sucesso' === $( '#firstHeading' ).text() ){
 		// Ficará obsoleto se e quando for possível usar [[MediaWiki:Movepage-page-moved]] com $3 e $4 (ver translatewiki)
