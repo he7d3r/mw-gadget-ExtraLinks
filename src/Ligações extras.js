@@ -67,27 +67,6 @@ if (8 === mw.config.get( 'wgNamespaceNumber' ) ) {
 	);
 }
 
-// Adiciona ligações editar, links e hist à tela exibida depois de mover uma página
-if ( 'Movepage' === mw.config.get( 'wgCanonicalSpecialPageName' ) ) {
-	if ( 'Página movida com sucesso' === $( '#firstHeading' ).text() ){
-		// Ficará obsoleto se e quando for possível usar [[MediaWiki:Movepage-page-moved]] com $3 e $4 (ver translatewiki)
-		$( '#bodyContent ul:eq(1) li' ).each( function() {
-			var	$mov = $(this).find( 'a' ),
-				url = [
-					mw.config.get( 'wgScript' ) + '?title=' + encodeURIComponent( $mov.eq(0).text() ) + '&action=',
-					mw.config.get( 'wgScript' ) + '?title=' + encodeURIComponent( $mov.eq(1).text() ) + '&action='
-				];
-			$mov.each(function( index ) {
-				$(this).after( ' ) ' )
-					.after( $( '<a>' ).attr( 'href', url[ index ] + 'delete' ).text( 'delete' ) ).after( ' | ' )
-					.after( $( '<a>' ).attr( 'href', url[ index ] + 'history' ).text( 'hist' ) ).after( ' | ' )
-					.after( $( '<a>' ).attr( 'href', mw.util.wikiGetlink( 'Special:WhatLinksHere/' + $(this).text() ) ).text( 'links' ) ).after( ' | ' )
-					.after( $( '<a>' ).attr( 'href', url[ index ] + 'edit' ).text( 'edit' ) ).after( ' ( ' );
-			});
-		});
-	}
-}
-
 //Adiciona uma ligação na barra lateral para mostrar as estatísticas sobre a visualização da página exibida
 proj = mw.config.get( 'wgDBname' ).replace( /^.+(wiki.*)$/g, '$1' );
 code = {
