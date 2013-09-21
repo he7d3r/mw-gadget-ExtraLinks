@@ -25,8 +25,11 @@ if ( $.inArray( mw.config.get( 'wgDBname' ), [ 'ptwikibooks', 'my_wiki' ] ) !== 
 		't',
 		'#t-whatlinkshere'
 	);
-	link = mw.util.wikiGetlink( 'Special:RecentChangesLinked' )
-		+ '?days=30&limit=500&target=Categoria:Livro/' + encodedBookName;
+	link = mw.util.wikiGetlink( 'Special:RecentChangesLinked', {
+      days: 30,
+      limit: 500,
+      target: 'Categoria:Livro/' + mw.config.get( 'wgBookName' )
+    } );
 	mw.util.addPortletLink(
 		'p-navigation',
 		link,
@@ -39,8 +42,12 @@ if ( $.inArray( mw.config.get( 'wgDBname' ), [ 'ptwikibooks', 'my_wiki' ] ) !== 
 }
 
 if ( 0 <= mw.config.get( 'wgNamespaceNumber' ) ) {
-	link = mw.util.wikiGetlink( 'Special:RecentChangesLinked/' + mw.config.get('wgPageName') )
-		+ '?namespace=0&showlinkedto=1&days=30&limit=500';
+	link = mw.util.wikiGetlink( 'Special:RecentChangesLinked/' + mw.config.get('wgPageName'), {
+      namespace: 0,
+      showlinkedto: 1,
+      days: 30,
+      limit: 500
+    } );
 	mw.util.addPortletLink(
 		'p-navigation',
 		link,
