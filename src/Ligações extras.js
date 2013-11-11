@@ -25,7 +25,7 @@ if ( $.inArray( mw.config.get( 'wgDBname' ), [ 'ptwikibooks', 'my_wiki' ] ) !== 
 		't',
 		'#t-whatlinkshere'
 	);
-	link = mw.util.wikiGetlink( 'Special:RecentChangesLinked', {
+	link = mw.util.getUrl( 'Special:RecentChangesLinked', {
       days: 30,
       limit: 500,
       target: 'Categoria:Livro/' + mw.config.get( 'wgBookName' )
@@ -42,7 +42,7 @@ if ( $.inArray( mw.config.get( 'wgDBname' ), [ 'ptwikibooks', 'my_wiki' ] ) !== 
 }
 
 if ( 0 <= mw.config.get( 'wgNamespaceNumber' ) ) {
-	link = mw.util.wikiGetlink( 'Special:RecentChangesLinked/' + mw.config.get('wgPageName'), {
+	link = mw.util.getUrl( 'Special:RecentChangesLinked/' + mw.config.get('wgPageName'), {
       namespace: 0,
       showlinkedto: 1,
       days: 30,
@@ -122,7 +122,7 @@ mw.util.addPortletLink(
 
 // Subpáginas
 if ( document.getElementById('p-tb') && $.inArray( mw.config.get( 'wgNamespaceNumber' ), [ -1, 6 ] ) === -1 ){
-	link = mw.util.wikiGetlink( 'Special:PrefixIndex/' + mw.config.get( 'wgPageName' ) );
+	link = mw.util.getUrl( 'Special:PrefixIndex/' + mw.config.get( 'wgPageName' ) );
 	mw.util.addPortletLink( 'p-tb', link, 'Subpáginas', 't-subpages', 'Subpáginas desta página' );
 }
 
@@ -134,7 +134,7 @@ $link.after(
 	$( '<a>' )
 		.attr(
 			'href',
-			mw.util.wikiGetlink( specialPermaLink )
+			mw.util.getUrl( specialPermaLink )
 		)
 		.text( '[[wiki]]' )
 		.click( function( e ){
