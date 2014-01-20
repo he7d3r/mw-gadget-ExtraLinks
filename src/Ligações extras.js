@@ -70,7 +70,7 @@ if ( $.inArray( mw.config.get( 'wgNamespaceNumber' ), [ 2, 3 ] ) !== -1
 	}
 	mw.util.addPortletLink(
 		'p-tb',
-		'//toolserver.org/~luxo/contributions/contributions.php?user=' + mw.util.wikiUrlencode( user ),
+		'//tools.wmflabs.org/guc/index.php?user=' + mw.util.wikiUrlencode( user ),
 		'Contribuições globais',
 		't-global',
 		'Ver as contribuições globais de ' + user,
