@@ -14,8 +14,8 @@ if ( $.inArray( mw.config.get( 'wgDBname' ), [ 'ptwikibooks', 'my_wiki' ] ) !== 
 	&& mw.config.get( 'wgNamespaceNumber' ) === 0
 ) {
 	encodedBookName = mw.util.wikiUrlencode( mw.config.get( 'wgBookName' ) );
-	link = '//toolserver.org/~pathoschild/catanalysis/?title='
-		+ encodedBookName + '&cat=0&wiki=ptwikibooks_p';
+	link = '//toolserver.org/~pathoschild/catanalysis/?title=' +
+		encodedBookName + '&cat=0&wiki=ptwikibooks_p';
 	mw.util.addPortletLink(
 		'p-tb',
 		link,
@@ -79,23 +79,25 @@ if ( $.inArray( mw.config.get( 'wgNamespaceNumber' ), [ 2, 3 ] ) !== -1
 	);
 
 	// Rename default link
-	$( '#t-contributions' ).find( 'a' ).text( 'Contribuições');
+	$( '#t-contributions' ).find( 'a' ).text( 'Contribuições' );
 }
 
 
-//Adiciona ao topo das mensagens de sistema uma aba com ligação para o Translatewiki
-if ( 8 === mw.config.get( 'wgNamespaceNumber' ) ) {
+// Adiciona ao topo das mensagens de sistema uma aba com ligação para o Translatewiki
+if ( 8 === mw.config.get( 'wgNamespaceNumber' ) && mw.config.get( 'wgDBname' ) !== 'translatewiki_net' ) {
 	mw.util.addPortletLink(
 		'p-namespaces',
-		'//translatewiki.net/wiki/' + mw.util.wikiUrlencode( mw.config.get( 'wgPageName' ) ) +
-			( mw.config.get( 'wgPageName' ).indexOf( '/' ) === -1 ? '/pt' : '' ),
+		'//translatewiki.net' + mw.util.getUrl(
+			mw.config.get( 'wgPageName' ) + ( mw.config.get( 'wgPageName' ).indexOf( '/' ) === -1 ? '/pt' : '' ),
+			{ action: 'edit' }
+		),
 		'Translatewiki',
 		'ca-trans',
 		'Ver a mesma mensagem no Translatewiki.net'
 	);
 }
 
-//Adiciona uma ligação na barra lateral para mostrar as estatísticas sobre a visualização da página exibida
+// Adiciona uma ligação na barra lateral para mostrar as estatísticas sobre a visualização da página exibida
 proj = mw.config.get( 'wgDBname' ).replace( /^.+(wiki.*)$/g, '$1' );
 code = {
 	'wiki': '',
@@ -117,8 +119,6 @@ mw.util.addPortletLink(
 	't',
 	'#t-whatlinkshere'
 );
-
-
 
 // Subpáginas
 if ( document.getElementById('p-tb') && $.inArray( mw.config.get( 'wgNamespaceNumber' ), [ -1, 6 ] ) === -1 ){
