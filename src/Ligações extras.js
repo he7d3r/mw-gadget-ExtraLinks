@@ -14,8 +14,8 @@ if ( $.inArray( mw.config.get( 'wgDBname' ), [ 'ptwikibooks', 'my_wiki' ] ) !== 
 	&& mw.config.get( 'wgNamespaceNumber' ) === 0
 ) {
 	encodedBookName = mw.util.wikiUrlencode( mw.config.get( 'wgBookName' ) );
-	link = '//toolserver.org/~pathoschild/catanalysis/?title=' +
-		encodedBookName + '&cat=0&wiki=ptwikibooks_p';
+	link = '//tools.wmflabs.org/pathoschild-contrib/catanalysis/?title=' +
+		encodedBookName + '&cat=0&wiki=ptwikibooks';
 	mw.util.addPortletLink(
 		'p-tb',
 		link,
