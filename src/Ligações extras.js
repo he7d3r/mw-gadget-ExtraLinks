@@ -88,7 +88,7 @@ if ( 8 === mw.config.get( 'wgNamespaceNumber' ) && mw.config.get( 'wgDBname' ) !
 	mw.util.addPortletLink(
 		'p-namespaces',
 		'//translatewiki.net' + mw.util.getUrl(
-			mw.config.get( 'wgPageName' ) + ( mw.config.get( 'wgPageName' ).indexOf( '/' ) === -1 ? '/pt' : '' ),
+			mw.config.get( 'wgPageName' ) + ( mw.config.get( 'wgPageName' ).indexOf( '/' ) === -1 ? '/' + mw.config.get( 'wgContentLanguage' ) : '' ),
 			{ action: 'edit' }
 		),
 		'Translatewiki',
