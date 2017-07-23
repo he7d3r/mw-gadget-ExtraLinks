@@ -6,10 +6,10 @@
 ( function ( mw, $ ) {
 	'use strict';
 
-	var link, $link, encodedBookName, user, proj, code, specialPermaLink;
+	var link, $link, encodedBookName, user, proj, specialPermaLink;
 
-	if ( $.inArray( mw.config.get( 'wgDBname' ), [ 'ptwikibooks', 'my_wiki' ] ) !== -1
-		&& mw.config.get( 'wgNamespaceNumber' ) === 0
+	if ( $.inArray( mw.config.get( 'wgDBname' ), [ 'ptwikibooks', 'my_wiki' ] ) !== -1 &&
+		mw.config.get( 'wgNamespaceNumber' ) === 0
 	) {
 		encodedBookName = mw.util.wikiUrlencode( mw.config.get( 'wgBookName' ) );
 		link = '//tools.wmflabs.org/pathoschild-contrib/catanalysis/?title=' +
@@ -58,8 +58,8 @@
 	}
 
 	// Adiciona uma ligação para as contribuições globais de um usuário
-	if ( $.inArray( mw.config.get( 'wgNamespaceNumber' ), [ 2, 3 ] ) !== -1
-		|| mw.config.get('wgCanonicalSpecialPageName') === 'Contributions'
+	if ( $.inArray( mw.config.get( 'wgNamespaceNumber' ), [ 2, 3 ] ) !== -1 ||
+		mw.config.get('wgCanonicalSpecialPageName') === 'Contributions'
 	) {
 		if ( mw.config.get('wgNamespaceNumber') === -1 ) {
 			user = $('input[name="target"]').val();
@@ -81,7 +81,9 @@
 	}
 
 	// Adiciona ao topo das mensagens de sistema uma aba com ligação para o Translatewiki
-	if ( mw.config.get( 'wgNamespaceNumber' ) === 8 && mw.config.get( 'wgDBname' ) !== 'translatewiki_net' ) {
+	if ( mw.config.get( 'wgNamespaceNumber' ) === 8 &&
+		mw.config.get( 'wgDBname' ) !== 'translatewiki_net'
+	) {
 		mw.util.addPortletLink(
 			'p-namespaces',
 			'//translatewiki.net' + mw.util.getUrl(
@@ -96,20 +98,15 @@
 
 	// Adiciona uma ligação na barra lateral para mostrar as estatísticas sobre a visualização da página exibida
 	proj = mw.config.get( 'wgDBname' ).replace( /^.+(wiki.*)$/g, '$1' );
-	code = {
-		'wiki': '',
-		'wikibooks': '.b',
-		'wiktionary': '.d',
-		'wikiquote': '.q',
-		'wikinews': '.n',
-		'wikisource': '.s',
-		'wikiversity': '.v'
-	};
 
 	mw.util.addPortletLink(
 		'p-tb',
-		'http://stats.grok.se/' + mw.config.get( 'wgContentLanguage' ) + code[proj] +
-			'/latest90/' + mw.config.get( 'wgPageName' ),
+		'https://tools.wmflabs.org/pageviews/?' +
+			$.param( {
+				projec: mw.config.get( 'wgServerName' ),
+				range: 'latest-90',
+				pages: mw.config.get( 'wgPageName' )
+			} ),
 		'Exibições da página',
 		't-stat',
 		'Ver estatísticas sobre a visualização desta página',
