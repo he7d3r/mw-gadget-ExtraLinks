@@ -103,7 +103,7 @@
 		'p-tb',
 		'https://tools.wmflabs.org/pageviews/?' +
 			$.param( {
-				projec: mw.config.get( 'wgServerName' ),
+				project: mw.config.get( 'wgServerName' ),
 				range: 'latest-90',
 				pages: mw.config.get( 'wgPageName' )
 			} ),
