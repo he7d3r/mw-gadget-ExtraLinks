@@ -140,22 +140,4 @@
 			} )
 	);
 
-	// Adds a link to change the search backend on [[Special:Search]]
-	if ( mw.config.get( 'wgCanonicalSpecialPageName' ) === 'Search' ) {
-		mw.util.addPortletLink(
-			'p-namespaces',
-			location.href + '&srbackend=CirrusSearch',
-			'Cirrus',
-			'ca-cirrus',
-			'Refazer a busca utilizando CirrusSearch'
-		);
-		mw.util.addPortletLink(
-			'p-namespaces',
-			location.href + '&srbackend=LuceneSearch',
-			'Lucene',
-			'ca-lucene',
-			'Refazer a busca utilizando LuceneSearch'
-		);
-	}
-
 }( mediaWiki, jQuery ) );
