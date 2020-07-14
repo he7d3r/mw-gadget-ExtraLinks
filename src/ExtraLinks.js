@@ -146,7 +146,7 @@
 			'https://angryloki.github.io/wikidata-graph-builder/?' +
 				$.param( {
 					property: 'P279', // Subclass of ...
-					item: mw.config.get( 'wgWikibaseItemId' ),
+					item: mw.config.get( 'wgWikibaseItemId' ) || mw.config.get( 'wbEntityId' ),
 					lang: mw.config.get( 'wgUserLanguage' ),
 					mode: 'both'
 				} ),
