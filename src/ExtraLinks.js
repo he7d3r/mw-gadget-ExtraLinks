@@ -140,4 +140,26 @@
 			} )
 	);
 
+	function addWikidataGraphBuilderLink() {
+		$( mw.util.addPortletLink(
+			'p-cactions',
+			'https://angryloki.github.io/wikidata-graph-builder/?' +
+				$.param( {
+					property: 'P279', // Subclass of ...
+					item: mw.config.get( 'wgWikibaseItemId' ),
+					lang: mw.config.get( 'wgUserLanguage' ),
+					mode: 'both'
+				} ),
+			'Wikidata Graph Builder',
+			'ca-wgb',
+			'Mostrar item associado à página atual no Wikidata Graph Builder'
+		) );
+	}
+
+	if ( mw.config.get( 'wgNamespaceNumber' ) >= 0 &&
+		$.inArray( mw.config.get('wgAction'), [ 'view', 'purge' ]) !== -1
+	) {
+		$( addWikidataGraphBuilderLink );
+	}
+
 }( mediaWiki, jQuery ) );
